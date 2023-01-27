@@ -12,7 +12,7 @@ export class Memory extends HTMLElement {
             .then(() => this.#render())
     }
 
-    async #generate(amount: number) {
+    async #generate(amount: number): Promise<void> {
         for (let i = 1; i <= amount / 2; i++) {
             const card: HTMLDivElement = document.createElement('div')
             card.classList.add(`memory-card`)
@@ -20,7 +20,7 @@ export class Memory extends HTMLElement {
                 Date.now() + Math.floor(Math.random() * 1000)
             ).toString()
 
-            const img = document.createElement('img')
+            const img: HTMLImageElement = document.createElement('img')
             img.src = await this.#getImage()
 
             this.cards.forEach(async (card) => {
@@ -42,9 +42,9 @@ export class Memory extends HTMLElement {
         )
     }
 
-    #shuffle() {
-        for (let i = this.cards.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1))
+    #shuffle(): void {
+        for (let i: number = this.cards.length - 1; i > 0; i--) {
+            let j: number = Math.floor(Math.random() * (i + 1))
             ;[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]]
         }
     }
