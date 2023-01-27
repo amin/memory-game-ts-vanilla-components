@@ -1,34 +1,23 @@
+import './memory.css'
+
 export class Memory extends HTMLElement {
-    cards: HTMLElement[]
+    cards: HTMLDivElement[]
 
     constructor() {
         super()
         this.cards = []
         this.attachShadow({ mode: 'open' })
-        this.#generateCardsArray(12)
+        this.#generate(12)
             .then(() => this.#shuffle())
             .then(() => this.#render())
     }
 
-    #render(): void {
-        for (const card of this.cards) {
-            this.shadowRoot?.append(card.cloneNode(true))
-        }
-    }
-
-    #shuffle() {
-        for (let i = this.cards.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1))
-            ;[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]]
-        }
-    }
-
-    async #generateCardsArray(amount: number) {
+    async #generate(amount: number) {
         for (let i = 1; i <= amount / 2; i++) {
-            const card: HTMLElement = document.createElement('div')
+            const card: HTMLDivElement = document.createElement('div')
             card.classList.add(`memory-card`)
             card.dataset.id = (
-                Date.now() + Math.floor(Math.random() * 100)
+                Date.now() + Math.floor(Math.random() * 1000)
             ).toString()
 
             const img = document.createElement('img')
@@ -51,6 +40,19 @@ export class Memory extends HTMLElement {
         return await fetch('https://loremflickr.com/320/240/patterns').then(
             (data) => data.url
         )
+    }
+
+    #shuffle() {
+        for (let i = this.cards.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1))
+            ;[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]]
+        }
+    }
+
+    #render(): void {
+        for (const card of this.cards) {
+            this.shadowRoot?.append(card.cloneNode(true))
+        }
     }
 }
 
