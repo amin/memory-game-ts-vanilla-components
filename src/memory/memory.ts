@@ -36,7 +36,7 @@ export class Memory extends HTMLElement {
         }
     }
 
-    async #getImage() {
+    async #getImage(): Promise<string> {
         return await fetch('https://loremflickr.com/320/240/patterns').then(
             (data) => data.url
         )
