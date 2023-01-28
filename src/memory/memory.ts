@@ -66,7 +66,7 @@ export class Memory extends HTMLElement {
             back.classList.add('card-back')
 
             back.append(this.img)
-            front.append('hello')
+            front.append('Memory')
 
             const inner = document.createElement('div')
             inner.classList.add('card-flip')
@@ -123,6 +123,7 @@ export class Memory extends HTMLElement {
     #bindEvents(): void {
         this.shadowRoot!.querySelectorAll('card').forEach((card) =>
             card.addEventListener('click', (e) => {
+                if (this.shadowRoot!.querySelectorAll('[data-clicked]').length === 2) return
                 if (!(e.currentTarget as HTMLDivElement).hasAttribute('data-clicked')) {
                     ;(e.currentTarget as HTMLDivElement).setAttribute('data-clicked', '')
                     this.#check(Number((e.currentTarget as HTMLDivElement).getAttribute('data-id')))
