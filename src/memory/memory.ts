@@ -36,7 +36,9 @@ export class Memory extends HTMLElement {
     }
 
     #flip(id: number) {
-        console.log('image: ', id)
+        this.shadowRoot!.querySelectorAll(`[data-id="${id}"`).forEach((element) =>
+            element.setAttribute('data-completed', '')
+        )
     }
 
     async #generate(amount?: number): Promise<void> {
