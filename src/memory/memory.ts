@@ -3,10 +3,13 @@ import './memory.css'
 type Difficulty = 'easy' | 'normal' | 'hard'
 
 export class Memory extends HTMLElement {
-    cards: HTMLDivElement[]
+    cards: DocumentFragment[]
+    img: HTMLImageElement
+
     constructor() {
         super()
         this.cards = []
+        this.img = document.createElement('img')
         this.attachShadow({ mode: 'open' })
         this.#play('hard')
     }
@@ -40,31 +43,42 @@ export class Memory extends HTMLElement {
         }
 
         for (let i = 1; i <= amount / 2; i++) {
+            const fragment = new DocumentFragment()
             const card: HTMLDivElement = document.createElement('div')
+            let data: Response = await this.#getImage()
+            this.img = document.createElement('img')
+
             card.classList.add(`memory-card`)
             card.dataset.id = (
                 Date.now() + Math.floor(Math.random() * 1000)
             ).toString()
 
-            const img: HTMLImageElement = document.createElement('img')
-            img.src = URL.createObjectURL(await this.#getImage())
+            this.img.src = URL.createObjectURL(await data.blob())
+            this.img.dataset.url = data.url
 
             this.cards.forEach(async (card) => {
-                while (img.src === card!.querySelector('img')!.src) {
-                    img.src = URL.createObjectURL(await this.#getImage())
+                if (
+                    card
+                        .querySelector('[data-url]')
+                        ?.getAttribute('data-url') === data.url
+                ) {
+                    this.img = document.createElement('img')
+                    let data: Response = await this.#getImage()
+                    this.img.src = URL.createObjectURL(await data.blob())
+                    this.img.dataset.url = data.url
                 }
             })
 
-            card.append(img)
-
-            this.cards.push(card)
-            this.cards.push(card)
+            card.append(this.img)
+            fragment.append(card)
+            this.cards.push(fragment)
+            this.cards.push(fragment)
         }
     }
 
-    async #getImage(): Promise<Blob> {
+    async #getImage(): Promise<Response> {
         return await fetch('https://loremflickr.com/240/240/patterns').then(
-            (data) => data.blob()
+            (data) => data
         )
     }
 
@@ -79,6 +93,13 @@ export class Memory extends HTMLElement {
         for (const card of this.cards) {
             this.shadowRoot!.append(card.cloneNode(true))
         }
+        this.#bindEvents()
+    }
+
+    #bindEvents(): void {
+        this.shadowRoot!.querySelectorAll('.memory-card').forEach((card) =>
+            card.addEventListener('click', (e) => console.log(e.currentTarget))
+        )
     }
 }
 
