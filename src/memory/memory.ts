@@ -1,6 +1,6 @@
 import './memory.css'
 
-type Difficulty = 'easy' | 'normal' | 'hard'
+type Difficulty = 'easy' | 'medium' | 'hard'
 
 export class Memory extends HTMLElement {
     cards: DocumentFragment[]
@@ -11,7 +11,7 @@ export class Memory extends HTMLElement {
         this.cards = []
         this.img = document.createElement('img')
         this.attachShadow({ mode: 'open' })
-        this.#play('hard')
+        this.#play('medium')
     }
 
     #play(difficulty: Difficulty) {
@@ -33,7 +33,7 @@ export class Memory extends HTMLElement {
         if (!amount) {
             this.difficulty === 'easy'
                 ? (amount = 8)
-                : this.difficulty === 'normal'
+                : this.difficulty === 'medium'
                 ? (amount = 10)
                 : this.difficulty === 'hard'
                 ? (amount = 12)
