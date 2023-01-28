@@ -1,6 +1,9 @@
-import './memory.css'
+import '../base.css'
 
 type Difficulty = 'easy' | 'medium' | 'hard'
+
+const template = document.createElement('template')
+template.innerHTML = `<style>@import '/src/memory/memory.css'</style>`
 
 export class Memory extends HTMLElement {
     cards: DocumentFragment[]
@@ -13,6 +16,7 @@ export class Memory extends HTMLElement {
         this.flipped = []
         this.img = document.createElement('img')
         this.attachShadow({ mode: 'open' })
+        this.shadowRoot!.appendChild(template.content.cloneNode(true))
         this.#play('hard')
     }
 
@@ -32,7 +36,7 @@ export class Memory extends HTMLElement {
     }
 
     #flip(id: number) {
-        console.log('Image: ', id)
+        console.log('image: ', id)
     }
 
     async #generate(amount?: number): Promise<void> {
@@ -78,7 +82,7 @@ export class Memory extends HTMLElement {
     }
 
     async #getImage(): Promise<Response> {
-        return await fetch('https://loremflickr.com/240/240/gaming').then((data) => data)
+        return await fetch('https://loremflickr.com/240/240/scenery').then((data) => data)
     }
 
     #shuffle(): void {
