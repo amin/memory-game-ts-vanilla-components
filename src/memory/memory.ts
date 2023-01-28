@@ -9,58 +9,42 @@ export class Memory extends HTMLElement {
     cards: DocumentFragment[]
     img: HTMLImageElement
     flipped: number[]
+    delay: number
 
     constructor() {
         super()
         this.cards = []
         this.flipped = []
+        this.delay = 0
         this.img = document.createElement('img')
         this.attachShadow({ mode: 'open' })
         this.shadowRoot!.appendChild(template.content.cloneNode(true))
-        this.#play('hard')
+        this.#play('hard', 12)
     }
 
-    #play(difficulty: Difficulty) {
+    #play(difficulty: Difficulty, cards: number) {
         this.difficulty = difficulty
-        this.#generate()
+        this.#generate(difficulty, cards)
             .then(() => this.#shuffle())
             .then(() => this.#render())
     }
 
-    #check(id: number): void {
-        this.flipped.length
-            ? (() => {
-                  if (id === this.flipped.shift()) this.#flip(id)
-              })()
-            : this.flipped.push(id)
-    }
+    async #generate(difficulty: Difficulty, amount?: number): Promise<void> {
+        if (!amount) throw new Error('Invalid amount set.')
 
-    #flip(id: number) {
-        this.shadowRoot!.querySelectorAll(`[data-id="${id}"`).forEach((element) =>
-            element.setAttribute('data-completed', '')
-        )
-    }
-
-    async #generate(amount?: number): Promise<void> {
-        if (!amount) {
-            this.difficulty === 'easy'
-                ? (amount = 8)
-                : this.difficulty === 'medium'
-                ? (amount = 10)
-                : this.difficulty === 'hard'
-                ? (amount = 12)
-                : null
-
-            if (!amount) throw new Error('Invalid difficulty selected.')
-        }
+        difficulty === 'easy'
+            ? (this.delay = 2000)
+            : this.difficulty === 'medium'
+            ? (this.delay = 1200)
+            : this.difficulty === 'hard'
+            ? (this.delay = 800)
+            : null
 
         for (let i = 1; i <= amount / 2; i++) {
             const fragment = new DocumentFragment()
-            const card: HTMLDivElement = document.createElement('div')
             let data: Response = await this.#getImage()
             this.img = document.createElement('img')
-
-            card.classList.add(`memory-card`)
+            const card: HTMLElement = document.createElement('card')
             card.dataset.id = Date.now().toString()
 
             this.img.src = URL.createObjectURL(await data.blob())
@@ -75,7 +59,21 @@ export class Memory extends HTMLElement {
                 }
             })
 
-            card.append(this.img)
+            const front = document.createElement('div')
+            front.classList.add('card-front')
+
+            const back = document.createElement('div')
+            back.classList.add('card-back')
+
+            back.append(this.img)
+            front.append('hello')
+
+            const inner = document.createElement('div')
+            inner.classList.add('card-flip')
+
+            inner.append(front, back)
+
+            card.append(inner)
             fragment.append(card)
             this.cards.push(fragment)
             this.cards.push(fragment)
@@ -100,11 +98,36 @@ export class Memory extends HTMLElement {
         this.#bindEvents()
     }
 
+    #check(id: number): void {
+        this.flipped.length
+            ? (() => {
+                  if (id === this.flipped.shift()) this.#flip(id)
+                  if (id !== this.flipped.shift())
+                      setTimeout(
+                          () =>
+                              this.shadowRoot!.querySelectorAll('card').forEach((e) =>
+                                  e.removeAttribute('data-clicked')
+                              ),
+                          this.delay
+                      )
+              })()
+            : this.flipped.push(id)
+    }
+
+    #flip(id: number) {
+        this.shadowRoot!.querySelectorAll(`[data-id="${id}"`).forEach((element) =>
+            element.setAttribute('data-completed', '')
+        )
+    }
+
     #bindEvents(): void {
-        this.shadowRoot!.querySelectorAll('.memory-card').forEach((card) =>
-            card.addEventListener('click', (e) =>
-                this.#check(Number((e.currentTarget as HTMLDivElement).getAttribute('data-id')))
-            )
+        this.shadowRoot!.querySelectorAll('card').forEach((card) =>
+            card.addEventListener('click', (e) => {
+                if (!(e.currentTarget as HTMLDivElement).hasAttribute('data-clicked')) {
+                    ;(e.currentTarget as HTMLDivElement).setAttribute('data-clicked', '')
+                    this.#check(Number((e.currentTarget as HTMLDivElement).getAttribute('data-id')))
+                }
+            })
         )
     }
 
