@@ -65,7 +65,6 @@ export class Memory extends HTMLElement {
             this.img.dataset.url = data.url
 
             this.cards.forEach(async (card) => {
-                if (!(card.querySelector('[data-url]') instanceof Element)) throw new Error('Error')
                 if (card.querySelector('[data-url]')!.getAttribute('data-url') === data.url) {
                     this.img = document.createElement('img')
                     let data: Response = await this.#getImage()
