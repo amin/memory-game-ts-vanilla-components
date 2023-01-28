@@ -5,13 +5,15 @@ type Difficulty = 'easy' | 'medium' | 'hard'
 export class Memory extends HTMLElement {
     cards: DocumentFragment[]
     img: HTMLImageElement
+    flipped: number[]
 
     constructor() {
         super()
         this.cards = []
+        this.flipped = []
         this.img = document.createElement('img')
         this.attachShadow({ mode: 'open' })
-        this.#play('medium')
+        this.#play('hard')
     }
 
     #play(difficulty: Difficulty) {
@@ -21,12 +23,16 @@ export class Memory extends HTMLElement {
             .then(() => this.#render())
     }
 
-    set difficulty(value: Difficulty) {
-        this.setAttribute('difficulty', value)
+    #check(id: number): void {
+        this.flipped.length
+            ? (() => {
+                  if (id === this.flipped.shift()) this.#flip(id)
+              })()
+            : this.flipped.push(id)
     }
 
-    get difficulty(): Difficulty {
-        return (this.getAttribute('difficulty') as Difficulty) || 'easy'
+    #flip(id: number) {
+        console.log('Image: ', id)
     }
 
     async #generate(amount?: number): Promise<void> {
@@ -49,19 +55,14 @@ export class Memory extends HTMLElement {
             this.img = document.createElement('img')
 
             card.classList.add(`memory-card`)
-            card.dataset.id = (
-                Date.now() + Math.floor(Math.random() * 1000)
-            ).toString()
+            card.dataset.id = (Date.now() + Math.floor(Math.random() * 1000)).toString()
 
             this.img.src = URL.createObjectURL(await data.blob())
             this.img.dataset.url = data.url
 
             this.cards.forEach(async (card) => {
-                if (
-                    card
-                        .querySelector('[data-url]')
-                        ?.getAttribute('data-url') === data.url
-                ) {
+                if (!(card.querySelector('[data-url]') instanceof Element)) throw new Error('Error')
+                if (card.querySelector('[data-url]')!.getAttribute('data-url') === data.url) {
                     this.img = document.createElement('img')
                     let data: Response = await this.#getImage()
                     this.img.src = URL.createObjectURL(await data.blob())
@@ -77,9 +78,7 @@ export class Memory extends HTMLElement {
     }
 
     async #getImage(): Promise<Response> {
-        return await fetch('https://loremflickr.com/240/240/patterns').then(
-            (data) => data
-        )
+        return await fetch('https://loremflickr.com/240/240/gaming').then((data) => data)
     }
 
     #shuffle(): void {
@@ -98,8 +97,18 @@ export class Memory extends HTMLElement {
 
     #bindEvents(): void {
         this.shadowRoot!.querySelectorAll('.memory-card').forEach((card) =>
-            card.addEventListener('click', (e) => console.log(e.currentTarget))
+            card.addEventListener('click', (e) =>
+                this.#check(Number((e.currentTarget as HTMLDivElement).getAttribute('data-id')))
+            )
         )
+    }
+
+    set difficulty(value: Difficulty) {
+        this.setAttribute('difficulty', value)
+    }
+
+    get difficulty(): Difficulty {
+        return (this.getAttribute('difficulty') as Difficulty) || 'easy'
     }
 }
 
