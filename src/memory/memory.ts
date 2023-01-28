@@ -59,7 +59,7 @@ export class Memory extends HTMLElement {
             this.img = document.createElement('img')
 
             card.classList.add(`memory-card`)
-            card.dataset.id = (Date.now() + Math.floor(Math.random() * 1000)).toString()
+            card.dataset.id = Date.now().toString()
 
             this.img.src = URL.createObjectURL(await data.blob())
             this.img.dataset.url = data.url
