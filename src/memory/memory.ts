@@ -1,6 +1,6 @@
 import '../base.css'
 
-type Difficulty = 'easy' | 'medium' | 'hard'
+type Difficulty = 1 | 2 | 3
 
 const template = document.createElement('template')
 template.innerHTML = `<style>@import '/src/memory/memory.css'</style>`
@@ -10,32 +10,33 @@ export class Memory extends HTMLElement {
     img: HTMLImageElement
     flipped: number[]
     delay: number
+    menu: HTMLElement
     shadow: DocumentFragment
 
     constructor() {
         super()
         this.cards = []
         this.flipped = []
-        this.delay = 0
         this.img = document.createElement('img')
         this.shadow = this.attachShadow({ mode: 'open' })
         this.shadow.appendChild(template.content.cloneNode(true))
-        this.#play('easy', 12)
+        this.menu = document.querySelector('memory-menu')!
     }
 
-    #play(difficulty: Difficulty, cards: number) {
+    play(difficulty: Difficulty, cards: number) {
         this.#setDelay(difficulty)
         this.#generate(cards)
             .then(() => this.#shuffle())
             .then(() => this.#render())
+            .then(() => (this.menu.style.display = 'none'))
     }
 
     #setDelay(difficulty: Difficulty) {
-        difficulty === 'easy'
+        difficulty === 1
             ? (this.delay = 2000)
-            : this.difficulty === 'medium'
+            : difficulty === 2
             ? (this.delay = 1200)
-            : this.difficulty === 'hard'
+            : difficulty === 3
             ? (this.delay = 800)
             : null
     }
@@ -118,10 +119,17 @@ export class Memory extends HTMLElement {
     #flip(id: number) {
         this.shadow.querySelectorAll(`[data-id="${id}"`).forEach((element) => {
             element.setAttribute('data-completed', '')
-            const completed: boolean = Array.from(this.shadow.querySelectorAll('card')).every((e) =>
+            const completed: boolean = Array.from(this.shadow.querySelectorAll('memory-card')).every((e) =>
                 e.hasAttribute('data-completed')
             )
-            console.log(completed)
+            if (completed)
+                setTimeout(() => {
+                    this.shadow.querySelectorAll('memory-card').forEach((e) => {
+                        e.remove()
+                    })
+                    this.cards = []
+                    this.menu.style.display = 'block'
+                }, 2000)
         })
     }
 
@@ -142,7 +150,7 @@ export class Memory extends HTMLElement {
     }
 
     get difficulty(): Difficulty {
-        return (this.getAttribute('difficulty') as Difficulty) || 'easy'
+        return (this.getAttribute('difficulty') as Difficulty) || 1
     }
 }
 

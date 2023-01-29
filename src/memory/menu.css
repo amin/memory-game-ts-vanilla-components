@@ -1,0 +1,17 @@
+.menu__container {
+    width: max-content;
+    margin: auto;
+    display: grid;
+    padding: 1rem;
+    background-color: #000;
+}
+
+.menu__item {
+    background-color: brown;
+    padding: 1rem 2rem;
+    cursor: pointer;
+}
+
+.menu__item:hover {
+    background-color: #000;
+}
