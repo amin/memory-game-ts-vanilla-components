@@ -10,6 +10,7 @@ export class Memory extends HTMLElement {
     img: HTMLImageElement
     flipped: number[]
     delay: number
+    shadow: DocumentFragment
 
     constructor() {
         super()
@@ -17,21 +18,19 @@ export class Memory extends HTMLElement {
         this.flipped = []
         this.delay = 0
         this.img = document.createElement('img')
-        this.attachShadow({ mode: 'open' })
-        this.shadowRoot!.appendChild(template.content.cloneNode(true))
-        this.#play('hard', 12)
+        this.shadow = this.attachShadow({ mode: 'open' })
+        this.shadow.appendChild(template.content.cloneNode(true))
+        this.#play('easy', 12)
     }
 
     #play(difficulty: Difficulty, cards: number) {
-        this.difficulty = difficulty
-        this.#generate(difficulty, cards)
+        this.#setDelay(difficulty)
+        this.#generate(cards)
             .then(() => this.#shuffle())
             .then(() => this.#render())
     }
 
-    async #generate(difficulty: Difficulty, amount?: number): Promise<void> {
-        if (!amount) throw new Error('Invalid amount set.')
-
+    #setDelay(difficulty: Difficulty) {
         difficulty === 'easy'
             ? (this.delay = 2000)
             : this.difficulty === 'medium'
@@ -39,12 +38,14 @@ export class Memory extends HTMLElement {
             : this.difficulty === 'hard'
             ? (this.delay = 800)
             : null
+    }
 
+    async #generate(amount: number): Promise<void> {
         for (let i = 1; i <= amount / 2; i++) {
             const fragment = new DocumentFragment()
             let data: Response = await this.#getImage()
             this.img = document.createElement('img')
-            const card: HTMLElement = document.createElement('card')
+            const card: HTMLElement = document.createElement('memory-card')
             card.dataset.id = Date.now().toString()
 
             this.img.src = URL.createObjectURL(await data.blob())
@@ -93,7 +94,7 @@ export class Memory extends HTMLElement {
 
     #render(): void {
         for (const card of this.cards) {
-            this.shadowRoot!.append(card.cloneNode(true))
+            this.shadow.append(card.cloneNode(true))
         }
         this.#bindEvents()
     }
@@ -105,9 +106,9 @@ export class Memory extends HTMLElement {
                   if (id !== this.flipped.shift())
                       setTimeout(
                           () =>
-                              this.shadowRoot!.querySelectorAll('card').forEach((e) =>
-                                  e.removeAttribute('data-clicked')
-                              ),
+                              this.shadow
+                                  .querySelectorAll('memory-card')
+                                  .forEach((e) => e.removeAttribute('data-clicked')),
                           this.delay
                       )
               })()
@@ -115,15 +116,19 @@ export class Memory extends HTMLElement {
     }
 
     #flip(id: number) {
-        this.shadowRoot!.querySelectorAll(`[data-id="${id}"`).forEach((element) =>
+        this.shadow.querySelectorAll(`[data-id="${id}"`).forEach((element) => {
             element.setAttribute('data-completed', '')
-        )
+            const completed: boolean = Array.from(this.shadow.querySelectorAll('card')).every((e) =>
+                e.hasAttribute('data-completed')
+            )
+            console.log(completed)
+        })
     }
 
     #bindEvents(): void {
-        this.shadowRoot!.querySelectorAll('card').forEach((card) =>
+        this.shadow.querySelectorAll('memory-card').forEach((card) =>
             card.addEventListener('click', (e) => {
-                if (this.shadowRoot!.querySelectorAll('[data-clicked]').length === 2) return
+                if (this.shadow.querySelectorAll('[data-clicked]').length === 2) return
                 if (!(e.currentTarget as HTMLDivElement).hasAttribute('data-clicked')) {
                     ;(e.currentTarget as HTMLDivElement).setAttribute('data-clicked', '')
                     this.#check(Number((e.currentTarget as HTMLDivElement).getAttribute('data-id')))

@@ -7,10 +7,17 @@
     <title>Memory: Web Components</title>
     <script type="module" src="/src/main.ts" defer></script>
     <script type="module" src="/src/memory/memory.ts" defer></script>
+    <script type="module" src="/src/memory/menu.ts" defer></script>
   </head>
   <body>
     <div id="app">
+      <memory-menu></memory-menu>
       <memory-game></memory-game>
     </div>
+
+    <template class="menu">
+      <style>@import '/src/memory/menu.css'</style>
+      <p>hello</p>
+    </template>
   </body>
 </html>
