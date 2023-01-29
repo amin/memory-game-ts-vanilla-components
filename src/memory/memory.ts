@@ -122,15 +122,18 @@ export class Memory extends HTMLElement {
             const completed: boolean = Array.from(this.shadow.querySelectorAll('memory-card')).every((e) =>
                 e.hasAttribute('data-completed')
             )
-            if (completed)
-                setTimeout(() => {
-                    this.shadow.querySelectorAll('memory-card').forEach((e) => {
-                        e.remove()
-                    })
-                    this.cards = []
-                    this.menu.style.display = 'block'
-                }, 2000)
+            if (completed) this.#reset
         })
+    }
+
+    #reset() {
+        setTimeout(() => {
+            this.shadow.querySelectorAll('memory-card').forEach((e) => {
+                e.remove()
+            })
+            this.cards = []
+            this.menu.style.display = 'block'
+        }, 2000)
     }
 
     #bindEvents(): void {
@@ -146,11 +149,11 @@ export class Memory extends HTMLElement {
     }
 
     set difficulty(value: Difficulty) {
-        this.setAttribute('difficulty', value)
+        this.setAttribute('difficulty', value.toString())
     }
 
     get difficulty(): Difficulty {
-        return (this.getAttribute('difficulty') as Difficulty) || 1
+        return (Number(this.getAttribute('difficulty')) as Difficulty) || 1
     }
 }
 
