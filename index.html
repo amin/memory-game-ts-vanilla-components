@@ -6,20 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Memory: Web Components</title>
     <script type="module" src="/src/main.ts" defer></script>
-    <script type="module" src="/src/memory/memory.ts" defer></script>
-    <script type="module" src="/src/memory/menu.ts" defer></script>
   </head>
   <body>
-    <div id="app">
-      <memory-menu></memory-menu>
-      <memory-game></memory-game>
-    </div>
-
-    <template class="menu">
+    <memory-game></memory-game>
+    <memory-menu></memory-menu>
+    <template id="memory">
       <style>
-        @import '/src/memory/menu.css';
-      </style>
+        memory-card {
+          cursor: pointer;
+          background-color: transparent;
+          width: 240px;
+          height: 240px;
+          border: 1px solid #f1f1f1;
+          perspective: 1000px; /* Remove this if you don't want the 3D effect */
+        }
 
+        /* This container is needed to position the front and back side */
+        .card-flip {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          transition: transform 0.8s;
+          transform-style: preserve-3d;
+        }
+
+        .card-front,
+        .card-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          -webkit-backface-visibility: hidden; /* Safari */
+          backface-visibility: hidden;
+        }
+
+        .card-front {
+          background-color: #bbb;
+          color: black;
+        }
+
+        [data-clicked] .card-flip {
+          transform: rotateY(180deg);
+        }
+
+        [data-completed] .card-flip {
+          transform: rotateY(180deg);
+        }
+
+        .card-back {
+          background-color: dodgerblue;
+          color: white;
+          transform: rotateY(180deg);
+        }
+      </style>
+    </template>
+    <template id="menu">
+      <style>
+        .menu__container {
+          width: max-content;
+          padding: 1rem;
+          background-color: #000;
+        }
+
+        .menu__item {
+          background-color: #d22b1e;
+          padding: 1rem 2rem;
+          cursor: pointer;
+          display: block;
+        }
+
+        .menu__item:hover {
+          background-color: #000;
+        }
+      </style>
       <div class="menu__container">
         <div class="menu__banner">Memory</div>
         <div class="menu__item">

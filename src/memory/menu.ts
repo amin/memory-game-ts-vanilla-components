@@ -5,9 +5,12 @@ export class Menu extends HTMLElement {
 
     constructor() {
         super()
+
+        const template: HTMLTemplateElement | null = document.querySelector('template#menu')
+        if (!(template instanceof HTMLTemplateElement)) return
+
         this.shadow = this.attachShadow({ mode: 'open' })
-        const template: string | null = document.querySelector('template.menu')!.innerHTML
-        this.shadow.innerHTML = template
+        this.shadow.append(template.content.cloneNode(true))
         this.memory = document.querySelector('memory-game')!
         this.#factory()
         this.#bindEvents()

@@ -1,10 +1,4 @@
-import '../base.css'
-
 type Difficulty = 1 | 2 | 3
-
-const template = document.createElement('template')
-template.innerHTML = `<style>@import '/src/memory/memory.css'</style>`
-
 export class Memory extends HTMLElement {
     cards: DocumentFragment[]
     img: HTMLImageElement
@@ -15,17 +9,17 @@ export class Memory extends HTMLElement {
 
     constructor() {
         super()
-        this.cards = []
-        this.flipped = []
-        this.img = document.createElement('img')
         this.shadow = this.attachShadow({ mode: 'open' })
-        this.shadow.appendChild(template.content.cloneNode(true))
+        const template: HTMLTemplateElement | null = document.querySelector('template#memory')
+
+        if (!(template instanceof HTMLTemplateElement)) return
+        this.shadow.append(template.content.cloneNode(true))
         this.menu = document.querySelector('memory-menu')!
     }
 
     play(difficulty: Difficulty, cards: number) {
-        this.#setDelay(difficulty)
         this.#generate(cards)
+            .then(() => this.#setDelay(difficulty))
             .then(() => this.#shuffle())
             .then(() => this.#render())
             .then(() => (this.menu.style.display = 'none'))
@@ -42,6 +36,9 @@ export class Memory extends HTMLElement {
     }
 
     async #generate(amount: number): Promise<void> {
+        this.cards = []
+        this.flipped = []
+        this.img = document.createElement('img')
         for (let i = 1; i <= amount / 2; i++) {
             const fragment = new DocumentFragment()
             let data: Response = await this.#getImage()
