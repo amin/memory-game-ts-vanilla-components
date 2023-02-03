@@ -1,10 +1,19 @@
+import { getTemplate, renderTemplate } from '../helpers/template'
+
 customElements.define(
   'memory-module',
   class Memory extends HTMLElement {
-    shadow: ShadowRootInit
+    root: ShadowRoot
     constructor() {
       super()
-      this.shadow = this.attachShadow({ mode: 'open' })
+      const sheet = new CSSStyleSheet()
+      this.root = this.attachShadow({ mode: 'open' })
+      this.root.adoptedStyleSheets = [sheet]
+
+      this.#createBoard('memory-card')
+    }
+    #createBoard(template: string, data?: Object) {
+      renderTemplate(this.root, getTemplate(template), data)
     }
   }
 )
