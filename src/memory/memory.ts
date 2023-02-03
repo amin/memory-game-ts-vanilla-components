@@ -6,17 +6,18 @@ customElements.define(
     root: ShadowRoot
     constructor() {
       super()
-      const sheet = new CSSStyleSheet()
       this.root = this.attachShadow({ mode: 'open' })
-      this.root.adoptedStyleSheets = [sheet]
-
-      this.#createBoard('memory-card')
+      this.root.innerHTML = '<style>@import url("./src/memory/memory.css")</style>'
     }
+
     #createBoard(template: string, data?: Object) {
       renderTemplate(this.root, getTemplate(template), data)
+    }
+
+    connectedCallback() {
+      this.#createBoard('card')
     }
   }
 )
 
 export default customElements.get('memory-component')
-import './memory.css'

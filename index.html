@@ -7,21 +7,18 @@
     <script type="module" src="/src/app.ts" defer></script>
   </head>
   <body>
+    <h1 class="title">hello</h1>
+
     <!-- <app /> -->
-    <memory-module>
-      <div slot="memory__front">the front</div>
-      <div slot="memory__back">the back</div>
-    </memory-module>
+    <memory-module></memory-module>
 
     <!-- TEMPLATES: <memory-module /> -->
 
     <!-- <memory-card /> -->
-    <template id="memory-card">
-      <div class="memory__card">
-        <div class="memory__wrap">
-          <div class="memory__front"><slot name="memory__front">framme</slot></div>
-          <div class="memory__back"><slot name="memory__back">backe</slot></div>
-        </div>
+    <template id="card">
+      <div class="wrap">
+        <div class="front"><slot name="front">framme</slot></div>
+        <div class="back"><slot name="back">backe</slot></div>
       </div>
     </template>
   </body>
