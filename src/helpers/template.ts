@@ -3,6 +3,5 @@ export function getTemplate(id: string): DocumentFragment {
 }
 
 export function renderTemplate(Shadow: ShadowRoot, template: DocumentFragment, data?: Object): void {
-    console.log(data)
     Shadow.append(template)
 }
