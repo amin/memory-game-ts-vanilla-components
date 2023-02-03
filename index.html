@@ -17,9 +17,9 @@
 
     <!-- <memory-card /> -->
     <template id="card">
-      <div class="wrap">
-        <div class="front"><slot name="front">framme</slot></div>
-        <div class="back"><slot name="back">backe</slot></div>
+      <div class="card" data-id>
+        <div data-front class="front"><slot name="front">framme</slot></div>
+        <div data-back class="back"><slot name="back">backe</slot></div>
       </div>
     </template>
   </body>
