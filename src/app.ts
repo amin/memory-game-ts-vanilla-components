@@ -1,4 +1,4 @@
 import './app.css'
 
-import memory from './memory/memory'
+import memory from './memory/app'
 if (memory) new memory()

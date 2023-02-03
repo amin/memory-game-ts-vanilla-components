@@ -7,7 +7,7 @@ customElements.define(
     constructor() {
       super()
       this.root = this.attachShadow({ mode: 'open' })
-      this.root.innerHTML = '<style>@import url("./src/memory/memory.css")</style>'
+      this.root.innerHTML = '<style>@import url("./src/memory/styles.css")</style>'
     }
 
     #createBoard(template: string, data?: Object) {
