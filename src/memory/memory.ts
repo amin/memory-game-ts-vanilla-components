@@ -1,5 +1,5 @@
 customElements.define(
-  'memory-component',
+  'memory-module',
   class Memory extends HTMLElement {
     shadow: ShadowRootInit
     constructor() {
