@@ -8,12 +8,12 @@ export function renderTemplate(root: ShadowRoot, template: DocumentFragment, dat
     if (!(element instanceof Element)) return
 
     for (const entry of data) {
-        const render = createElements(entry)
+        const render = generateTemplate(entry)
         root.append(render)
     }
 }
 
-function createElements(data: Object): DocumentFragment {
+function generateTemplate(data: Object): DocumentFragment {
     const fragment = new DocumentFragment()
     if (Object.keys(data).length) {
         if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
