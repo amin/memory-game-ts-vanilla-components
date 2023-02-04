@@ -1,20 +1,15 @@
-const cardUtility = {
+export default {
     settings: {
         api: 'https://picsum.photos/',
         size: 250,
         pairs: 6,
     },
 
-    getUrl: function (size: number) {
-        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.settings.api).href
-    },
-
-    getBoard: async function (this, { size = this.settings.size as number, pairs = this.settings.pairs as number } = {}): Promise<Object> {
-        if (pairs % 2 !== 0) throw new Error('Only even numbers allowed')
+    get: async function (this, { size = this.settings.size as number, pairs = this.settings.pairs as number } = {}): Promise<Object> {
         const array = []
 
         for (let i = pairs; i > 0; i--) {
-            const response: Response = (await this.getImages(this.getUrl(size))) as Response
+            const response: Response = (await this.grabImages(this.grabUrl(size))) as Response
             const blob: Blob = await response.blob()
             const base64 = URL.createObjectURL(blob)
             array.push(base64)
@@ -23,7 +18,11 @@ const cardUtility = {
         return this.shuffle(this.objectFactory(array))
     },
 
-    getImages: async function (url: string) {
+    grabUrl: function (size: number) {
+        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.settings.api).href
+    },
+
+    grabImages: async function (url: string) {
         try {
             return await fetch(url)
         } catch (e) {
@@ -56,5 +55,3 @@ const cardUtility = {
         return [...data, ...data]
     },
 }
-
-export default cardUtility

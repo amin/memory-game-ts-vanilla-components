@@ -27,5 +27,5 @@ function generateTemplate(data: Object): DocumentFragment {
             return fragment
         }, [] as DocumentFragment[])
     }
-    throw new Error('Something went wrong')
+    throw new Error('Something went very wrong.')
 }
