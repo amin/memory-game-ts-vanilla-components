@@ -36,9 +36,9 @@ export class Memory extends HTMLElement {
       },
       {
         element: {
-          type: 'img',
+          type: 'a',
           attributes: {
-            alt: 'a third piece',
+            alt: 'abdulla',
             src: 'https://picsum.photos/200?' + Date.now() + Math.floor(Math.random() * 1000),
             target: 'data-back',
           },

@@ -28,5 +28,5 @@ function createElements(data: Object): Array<HTMLDivElement> | boolean {
             return fragment ? fragment : accumulator
         }, [] as HTMLDivElement[])
     }
-    return false
+    throw new Error('Something went wrong.')
 }
