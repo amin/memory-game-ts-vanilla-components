@@ -25,7 +25,6 @@ function createElements(data: Object): Array<HTMLDivElement> | boolean {
                 })
             }
             fragment.append(element)
-
             return fragment ? fragment : accumulator
         }, [] as HTMLDivElement[])
     }
