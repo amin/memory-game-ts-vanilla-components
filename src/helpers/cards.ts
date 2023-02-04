@@ -11,8 +11,8 @@ export default {
         const array = []
 
         for (let i = pairs; i > 0; i--) {
-            const response: Response = (await this.grabImages(this.grabUrl(size))) as Response
-            const blob: Blob = await response.blob()
+            const response = (await this.grabImages(this.grabUrl(size))) as Response
+            const blob = await response.blob()
             const base64 = URL.createObjectURL(blob)
             array.push(base64)
         }
