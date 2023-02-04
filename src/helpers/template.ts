@@ -22,6 +22,7 @@ function createElement<T extends Object>(data: T, fragment?: DocumentFragment): 
 
         if (Object.values(entry).length) {
             if (typeof entry === 'object') createElement(entry, fragment)
+
             if (key === 'element') {
                 const element: HTMLElement = document.createElement(entry.type)
                 if (entry.src) (element as HTMLImageElement).src = entry.src
