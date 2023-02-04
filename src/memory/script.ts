@@ -1,4 +1,4 @@
-import { getTemplate, renderTemplate } from '../helpers/template'
+import { renderTemplate } from '../helpers/template'
 import cardUtility from '../helpers/cards'
 
 export class Memory extends HTMLElement {
@@ -10,7 +10,7 @@ export class Memory extends HTMLElement {
   }
 
   #createBoard(template: string, data?: Object[]) {
-    renderTemplate(this.root, getTemplate(template), data)
+    renderTemplate(this.root, template, data)
   }
 
   connectedCallback() {

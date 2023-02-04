@@ -14,13 +14,23 @@ const cardUtility = {
         const array = []
 
         for (let i = pairs; i > 0; i--) {
-            const response: Response = (await this.fetchImg(this.getUrl(size))) as Response
+            const response: Response = (await this.getImages(this.getUrl(size))) as Response
             const blob: Blob = await response.blob()
             const base64 = URL.createObjectURL(blob)
             array.push(base64)
         }
 
         return this.shuffle(this.objectFactory(array))
+    },
+
+    getImages: async function (url: string) {
+        try {
+            return await fetch(url)
+        } catch (e) {
+            console.error(e)
+            console.warn('Attempting to fetch content...')
+            return new Promise((resolve) => setTimeout(async () => resolve(await fetch(url)), 3000))
+        }
     },
 
     shuffle: function (array: Array<Object>) {
@@ -44,16 +54,6 @@ const cardUtility = {
             })
         }
         return [...data, ...data]
-    },
-
-    fetchImg: async function (url: string) {
-        try {
-            return await fetch(url)
-        } catch (e) {
-            console.error(e)
-            console.warn('Attempting to fetch content...')
-            return new Promise((resolve) => setTimeout(async () => resolve(await fetch(url)), 3000))
-        }
     },
 }
 
