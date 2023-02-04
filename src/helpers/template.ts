@@ -8,12 +8,32 @@ export function renderTemplate(root: ShadowRoot, template: DocumentFragment, dat
     if (!(element instanceof Element)) return
 
     for (const entry of data) {
-        element = Object.entries(entry).reduce((element, [key, entry]) => {
-            console.log(key)
-            console.log(entry)
-            return element
-        }, document.createElement('div'))
+        element = createElement(entry)
 
-        root.append(element.cloneNode(true))
+        //        root.append(element.cloneNode(true))
     }
+}
+
+function createElement<T extends Object>(data: T, fragment?: DocumentFragment): DocumentFragment {
+    if (!(fragment instanceof DocumentFragment)) fragment = new DocumentFragment()
+    if (!Object.keys(data).length) return fragment
+    for (const [key, entry] of Object.entries(data)) {
+        // First layer
+
+        if (Object.values(entry).length) {
+            if (typeof entry === 'object') createElement(entry, fragment)
+            if (key === 'element') {
+                const element: HTMLElement = document.createElement(entry.type)
+                if (entry.src) (element as HTMLImageElement).src = entry.src
+                if (entry.target) element.setAttribute('target', entry.target)
+                fragment.append(element)
+                createElement(entry, fragment)
+            }
+
+            if (key === 'attributes') {
+                console.log(entry)
+            }
+        }
+    }
+    return fragment
 }

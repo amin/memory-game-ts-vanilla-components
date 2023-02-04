@@ -16,21 +16,21 @@ export class Memory extends HTMLElement {
     this.#createBoard('card', [
       {
         id: Date.now() + Math.floor(Math.random() * 1000),
-        back: {
-          img: 'https://picsum.photos/200',
+        element: {
+          target: 'data-back',
+          type: 'img',
+          src: 'https://picsum.photos/200',
+          attributes: {
+            alt: 'a memory piece',
+          },
         },
       },
       {
         id: Date.now() + Math.floor(Math.random() * 1000),
-        back: {
-          img: 'https://picsum.photos/200',
-        },
+        element: {},
       },
       {
         id: Date.now() + Math.floor(Math.random() * 1000),
-        back: {
-          img: 'https://picsum.photos/200',
-        },
       },
     ])
   }
