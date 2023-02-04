@@ -59,9 +59,9 @@ export default {
     fetchImg: async function (url: string) {
         try {
             return await fetch(url)
-        } catch {
-            console.warn('Attempting to fetch content again...')
-            return await fetch(url)
+        } catch (e) {
+            console.warn('Attempting to fetch content...')
+            return new Promise((resolve) => setTimeout(async () => resolve(await fetch(url)), 3000))
         }
     },
 }
