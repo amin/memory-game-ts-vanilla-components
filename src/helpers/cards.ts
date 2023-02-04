@@ -57,6 +57,11 @@ export default {
     },
 
     fetchImg: async function (url: string) {
-        return await fetch(url)
+        try {
+            return await fetch(url)
+        } catch {
+            console.warn('Attempting to fetch content again...')
+            return await fetch(url)
+        }
     },
 }
