@@ -16,7 +16,7 @@ export function renderTemplate(root: ShadowRoot, template: DocumentFragment, dat
 function createElements(data: Object): Array<HTMLDivElement> | boolean {
     const fragment = new DocumentFragment()
     if (Object.keys(data).length) {
-        if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters.')
+        if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
         return Object.values(data).reduce((accumulator, entry) => {
             const element = document.createElement(entry.type)
             if (entry.attributes) {
