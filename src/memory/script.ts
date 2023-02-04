@@ -14,7 +14,7 @@ export class Memory extends HTMLElement {
   }
 
   connectedCallback() {
-    card.getBoard({ pairs: 12 }).then((data) => {
+    card.getBoard({ pairs: 6 }).then((data) => {
       this.#createBoard('card', data as Object[])
     })
   }

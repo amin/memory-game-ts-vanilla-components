@@ -2,11 +2,11 @@ export default {
     settings: {
         api: 'https://picsum.photos/',
         defaultSize: 250,
-        defaultPairs: 12,
+        defaultPairs: 6,
     },
 
     getUrl: function (size: number) {
-        return new URL(size.toString(), this.settings.api).href
+        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.settings.api).href
     },
 
     getBoard: async function (this, { size = this.settings.defaultSize as number, pairs = this.settings.defaultPairs as number }): Promise<Object> {
@@ -16,7 +16,7 @@ export default {
         for (let i = pairs; i > 0; i--) {
             const response: Response = (await this.fetchImg(this.getUrl(size))) as Response
             const blob: Blob = await response.blob()
-            const base64 = URL.createObjectURL(await blob)
+            const base64 = URL.createObjectURL(blob)
             array.push(base64)
         }
 
@@ -34,32 +34,23 @@ export default {
     objectFactory: function (images: Array<Object>) {
         const data = []
         for (const image of images) {
-            data.push(
-                {
-                    element: {
-                        type: 'img',
-                        attributes: {
-                            src: image,
-                        },
+            data.push({
+                element: {
+                    type: 'img',
+                    attributes: {
+                        src: image,
                     },
                 },
-                {
-                    element: {
-                        type: 'img',
-                        attributes: {
-                            src: image,
-                        },
-                    },
-                }
-            )
+            })
         }
-        return data
+        return [...data, ...data]
     },
 
     fetchImg: async function (url: string) {
         try {
             return await fetch(url)
         } catch (e) {
+            console.error(e)
             console.warn('Attempting to fetch content...')
             return new Promise((resolve) => setTimeout(async () => resolve(await fetch(url)), 3000))
         }
