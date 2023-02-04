@@ -9,11 +9,11 @@ export function renderTemplate(root: ShadowRoot, template: DocumentFragment, dat
 
     for (const entry of data) {
         const render = createElements(entry)
-        console.log(render)
+        root.append(render)
     }
 }
 
-function createElements(data: Object): Array<HTMLDivElement> | boolean {
+function createElements(data: Object): DocumentFragment {
     const fragment = new DocumentFragment()
     if (Object.keys(data).length) {
         if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
@@ -25,8 +25,9 @@ function createElements(data: Object): Array<HTMLDivElement> | boolean {
                 })
             }
             fragment.append(element)
+
             return fragment ? fragment : accumulator
         }, [] as HTMLDivElement[])
     }
-    throw new Error('Something went wrong.')
+    throw new Error('Something went wrong')
 }

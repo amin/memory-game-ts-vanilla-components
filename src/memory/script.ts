@@ -1,4 +1,5 @@
 import { getTemplate, renderTemplate } from '../helpers/template'
+import card from '../helpers/cards'
 
 export class Memory extends HTMLElement {
   root: ShadowRoot
@@ -8,42 +9,13 @@ export class Memory extends HTMLElement {
     this.root.innerHTML = '<style>@import url("./src/memory/style.css")</style>'
   }
 
-  #createBoard(template: string, data?: Array<Object>) {
+  #createBoard(template: string, data?: Object[]) {
     renderTemplate(this.root, getTemplate(template), data)
   }
 
   connectedCallback() {
-    this.#createBoard('card', [
-      {
-        element: {
-          type: 'img',
-          attributes: {
-            alt: 'a third piece',
-            src: 'https://picsum.photos/200?' + Date.now() + Math.floor(Math.random() * 1000),
-            target: 'data-back',
-          },
-        },
-      },
-      {
-        element: {
-          type: 'img',
-          attributes: {
-            alt: 'a third piece',
-            src: 'https://picsum.photos/200?' + Date.now() + Math.floor(Math.random() * 1000),
-            target: 'data-back',
-          },
-        },
-      },
-      {
-        element: {
-          type: 'a',
-          attributes: {
-            alt: 'abdulla',
-            src: 'https://picsum.photos/200?' + Date.now() + Math.floor(Math.random() * 1000),
-            target: 'data-back',
-          },
-        },
-      },
-    ])
+    card.getBoard({ pairs: 12 }).then((data) => {
+      this.#createBoard('card', data as Object[])
+    })
   }
 }
