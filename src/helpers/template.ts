@@ -1,9 +1,6 @@
-export function renderTemplate(root: ShadowRoot, template: DocumentFragment | string, data?: Array<Object>): void {
+export function renderTemplate(root: ShadowRoot, template: DocumentFragment | string, data: Array<Object>): void {
     template = getTemplate(template as string)
 
-    if (!data) return
-    const element: HTMLDivElement | null = template.querySelector('[data-id]')
-    if (!(element instanceof Element)) return
     for (const entry of data) {
         const render = generateTemplate(entry)
         root.append(render)
