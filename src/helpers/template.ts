@@ -4,37 +4,30 @@ export function getTemplate(id: string): DocumentFragment {
 
 export function renderTemplate(root: ShadowRoot, template: DocumentFragment, data?: Array<Object>): void {
     if (!data) return
-    let element = template.querySelector('[data-id]')
+    const element: HTMLDivElement | null = template.querySelector('[data-id]')
     if (!(element instanceof Element)) return
 
     for (const entry of data) {
-        element = createElement(entry)
-
-        //        root.append(element.cloneNode(true))
+        const render = createElements(entry)
+        console.log(render)
     }
 }
 
-function createElement<T extends Object>(data: T, fragment?: DocumentFragment): DocumentFragment {
-    if (!(fragment instanceof DocumentFragment)) fragment = new DocumentFragment()
-    if (!Object.keys(data).length) return fragment
-    for (const [key, entry] of Object.entries(data)) {
-        // First layer
-
-        if (Object.values(entry).length) {
-            if (typeof entry === 'object') createElement(entry, fragment)
-
-            if (key === 'element') {
-                const element: HTMLElement = document.createElement(entry.type)
-                if (entry.src) (element as HTMLImageElement).src = entry.src
-                if (entry.target) element.setAttribute('target', entry.target)
-                fragment.append(element)
-                createElement(entry, fragment)
+function createElements(data: Object): Array<HTMLDivElement> | boolean {
+    const fragment = new DocumentFragment()
+    if (Object.keys(data).length) {
+        if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters.')
+        return Object.values(data).reduce((accumulator, entry): any => {
+            const element = document.createElement(entry.type)
+            if (entry.attributes) {
+                Object.entries(entry.attributes).map(([key, attribute]) => {
+                    element.setAttribute(key, attribute)
+                })
             }
+            fragment.append(element)
 
-            if (key === 'attributes') {
-                console.log(entry)
-            }
-        }
+            return fragment ? fragment : accumulator
+        }, [] as HTMLDivElement[])
     }
-    return fragment
+    return false
 }

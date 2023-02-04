@@ -15,22 +15,34 @@ export class Memory extends HTMLElement {
   connectedCallback() {
     this.#createBoard('card', [
       {
-        id: Date.now() + Math.floor(Math.random() * 1000),
         element: {
-          target: 'data-back',
           type: 'img',
-          src: 'https://picsum.photos/200',
           attributes: {
-            alt: 'a memory piece',
+            alt: 'a third piece',
+            src: 'https://picsum.photos/200?' + Date.now() + Math.floor(Math.random() * 1000),
+            target: 'data-back',
           },
         },
       },
       {
-        id: Date.now() + Math.floor(Math.random() * 1000),
-        element: {},
+        element: {
+          type: 'img',
+          attributes: {
+            alt: 'a third piece',
+            src: 'https://picsum.photos/200?' + Date.now() + Math.floor(Math.random() * 1000),
+            target: 'data-back',
+          },
+        },
       },
       {
-        id: Date.now() + Math.floor(Math.random() * 1000),
+        element: {
+          type: 'img',
+          attributes: {
+            alt: 'a third piece',
+            src: 'https://picsum.photos/200?' + Date.now() + Math.floor(Math.random() * 1000),
+            target: 'data-back',
+          },
+        },
       },
     ])
   }
