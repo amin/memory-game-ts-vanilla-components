@@ -1,5 +1,5 @@
 export default {
-    settings: {
+    options: {
         api: {
             url: 'https://picsum.photos/',
         },
@@ -7,7 +7,7 @@ export default {
         size: 250,
     },
 
-    get: async function (this, { size = this.settings.size as number, pairs = this.settings.pairs as number } = {}): Promise<Object> {
+    get: async function (this, { size = this.options.size as number, pairs = this.options.pairs as number } = {}): Promise<Object> {
         const array = []
 
         for (let i = pairs; i > 0; i--) {
@@ -21,7 +21,7 @@ export default {
     },
 
     grabUrl: function (size: number) {
-        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.settings.api.url).href
+        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.options.api.url).href
     },
 
     grabImages: async function (url: string) {
