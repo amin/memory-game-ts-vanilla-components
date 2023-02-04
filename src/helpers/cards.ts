@@ -16,8 +16,9 @@ export default {
                 const blob = await response.blob()
                 const base64 = URL.createObjectURL(blob)
                 array.push(base64)
-            } catch (err: any) {
-                throw new Error(err)
+            } catch (e) {
+                console.error(e)
+                throw new Error('Error parsing blobs.')
             }
         }
 
