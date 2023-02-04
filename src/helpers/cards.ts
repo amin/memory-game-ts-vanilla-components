@@ -7,7 +7,7 @@ export default {
         size: 250,
     },
 
-    get: async function (this, { size = this.options.size as number, pairs = this.options.pairs as number } = {}): Promise<Object> {
+    get: async function (this: any, { size = this.options.size as number, pairs = this.options.pairs as number } = {}): Promise<Object> {
         const array = []
 
         for (let i = pairs; i > 0; i--) {
