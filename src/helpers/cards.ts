@@ -1,15 +1,15 @@
-export default {
+const cardUtility = {
     settings: {
         api: 'https://picsum.photos/',
-        defaultSize: 250,
-        defaultPairs: 6,
+        size: 250,
+        pairs: 6,
     },
 
     getUrl: function (size: number) {
         return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.settings.api).href
     },
 
-    getBoard: async function (this, { size = this.settings.defaultSize as number, pairs = this.settings.defaultPairs as number }): Promise<Object> {
+    getBoard: async function (this, { size = this.settings.size as number, pairs = this.settings.pairs as number } = {}): Promise<Object> {
         if (pairs % 2 !== 0) throw new Error('Only even numbers allowed')
         const array = []
 
@@ -56,3 +56,5 @@ export default {
         }
     },
 }
+
+export default cardUtility

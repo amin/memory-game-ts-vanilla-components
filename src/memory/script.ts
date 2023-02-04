@@ -1,5 +1,5 @@
 import { getTemplate, renderTemplate } from '../helpers/template'
-import card from '../helpers/cards'
+import cardUtility from '../helpers/cards'
 
 export class Memory extends HTMLElement {
   root: ShadowRoot
@@ -14,7 +14,7 @@ export class Memory extends HTMLElement {
   }
 
   connectedCallback() {
-    card.getBoard({ pairs: 6 }).then((data) => {
+    cardUtility.getBoard().then((data) => {
       this.#createBoard('card', data as Object[])
     })
   }
