@@ -11,10 +11,14 @@ export default {
         const array = []
 
         for (let i = pairs; i > 0; i--) {
-            const response = (await this.grabImages(this.grabUrl(size))) as Response
-            const blob = await response.blob()
-            const base64 = URL.createObjectURL(blob)
-            array.push(base64)
+            try {
+                const response = (await this.grabImages(this.grabUrl(size))) as Response
+                const blob = await response.blob()
+                const base64 = URL.createObjectURL(blob)
+                array.push(base64)
+            } catch (err: any) {
+                throw new Error(err)
+            }
         }
 
         return this.shuffle(this.objectFactory(array))
