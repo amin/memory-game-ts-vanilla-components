@@ -5,17 +5,17 @@ export default {
         defaultPairs: 12,
     },
 
-    getUrl: function (size: string) {
-        return new URL(size, this.settings.api).href
+    getUrl: function (size: number) {
+        return new URL(size.toString(), this.settings.api).href
     },
 
-    getBoard: async function ({ size = this.settings.defaultSize, pairs = this.settings.defaultPairs }) {
+    getBoard: async function (this, { size = this.settings.defaultSize as number, pairs = this.settings.defaultPairs as number }): Promise<Object> {
         if (pairs % 2 !== 0) throw new Error('Only even numbers allowed')
         const array = []
 
-        for (let i = parseInt(pairs); i > 0; i--) {
-            const response = await this.fetchImg(this.getUrl(size))
-            const blob = response.blob()
+        for (let i = pairs; i > 0; i--) {
+            const response: Response = (await this.fetchImg(this.getUrl(size))) as Response
+            const blob: Blob = await response.blob()
             const base64 = URL.createObjectURL(await blob)
             array.push(base64)
         }
@@ -24,7 +24,7 @@ export default {
     },
 
     shuffle: function (array: Array<Object>) {
-        return array.reduce((accumulator, element, index, array) => {
+        return array.reduce((_accumulator, _element, index, array) => {
             let r = Math.floor((array.length - index) * Math.random() + 1)
             ;[array[index], array[r]] = [array[r], array[index]]
             return array

@@ -17,7 +17,7 @@ function createElements(data: Object): DocumentFragment {
     const fragment = new DocumentFragment()
     if (Object.keys(data).length) {
         if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
-        return Object.values(data).reduce((accumulator, entry): HTMLDivElement[] => {
+        return Object.values(data).reduce((_accumulator, entry): DocumentFragment => {
             const element = document.createElement(entry.type)
             if (entry.attributes) {
                 Object.entries(entry.attributes).map(([key, attribute]) => {
@@ -26,8 +26,8 @@ function createElements(data: Object): DocumentFragment {
             }
             fragment.append(element)
 
-            return fragment ? fragment : accumulator
-        }, [] as HTMLDivElement[])
+            return fragment
+        }, [] as DocumentFragment[])
     }
     throw new Error('Something went wrong')
 }
