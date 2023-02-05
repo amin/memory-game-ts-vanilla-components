@@ -1,20 +1,12 @@
-import { IOptions, IImage } from './interfaces'
+import { IImage } from './interfaces'
 
-export default {
-    options: {
-        api: {
-            url: 'https://picsum.photos/',
-        },
-        size: 250,
-        pairs: 6,
-    } satisfies IOptions,
-
-    get: async function (this, { size = this.options.size as number, pairs = this.options.pairs as number } = {}): Promise<Object> {
+const utils = {
+    getCards: async ({ size = 250 as number, pairs = 6 as number } = {}): Promise<Object> => {
         const array: string[] = []
 
         for (let i = pairs; i > 0; i--) {
             try {
-                const response = (await this.grabImages(this.grabUrl(size))) as Response
+                const response = (await utils.grabImages(utils.grabUrl(size))) as Response
                 const blob = await response.blob()
                 const base64 = URL.createObjectURL(blob)
                 array.push(base64)
@@ -24,11 +16,11 @@ export default {
             }
         }
 
-        return this.shuffle(this.objectFactory(array))
+        return utils.shuffle(utils.objectFactory(array))
     },
 
     grabUrl: function (size: number): string {
-        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.options.api.url).href
+        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, 'https://picsum.photos/').href
     },
 
     grabImages: async function (url: string): Promise<Object> {
@@ -64,3 +56,5 @@ export default {
         return [...data, ...data]
     },
 }
+
+export default utils.getCards

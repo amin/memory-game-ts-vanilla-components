@@ -1,5 +1,6 @@
 import { renderTemplate } from '../helpers/template'
-import memoryUtils from '../helpers/cards'
+import { IImage } from '../helpers/interfaces'
+import getCards from '../helpers/cards'
 
 export class Memory extends HTMLElement {
   root: ShadowRoot
@@ -9,13 +10,13 @@ export class Memory extends HTMLElement {
     this.root.innerHTML = '<style>@import url("./src/memory/style.css")</style>'
   }
 
-  #createBoard(template: string, data: Object[]) {
+  #generateBoard(template: string, data: IImage[]) {
     renderTemplate(this.root, template, data)
   }
 
   connectedCallback() {
-    memoryUtils.get().then((data) => {
-      this.#createBoard('card', data as Object[])
+    getCards().then((data) => {
+      this.#generateBoard('card', data as IImage[])
     })
   }
 }
