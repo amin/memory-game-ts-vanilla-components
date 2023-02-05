@@ -10,7 +10,7 @@ export default {
     } satisfies IOptions,
 
     get: async function (this, { size = this.options.size as number, pairs = this.options.pairs as number } = {}): Promise<Object> {
-        const array = []
+        const array: string[] = []
 
         for (let i = pairs; i > 0; i--) {
             try {
@@ -49,7 +49,7 @@ export default {
         }, [])
     },
 
-    objectFactory: function (images: IImage[]): IImage[] {
+    objectFactory: function (images: string[]): IImage[] {
         const data = []
         for (const image of images) {
             data.push({
