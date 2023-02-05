@@ -12,10 +12,10 @@ function getTemplate(id: string): DocumentFragment {
 }
 
 function generateTemplate(data: Object): DocumentFragment {
-    const fragment = new DocumentFragment()
-
     if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
     if (!Object.keys(data).length) throw new Error('Cannot parse data.')
+
+    const fragment = new DocumentFragment()
 
     return Object.values(data).reduce((_accumulator, entry) => {
         const element = document.createElement(entry.type)
