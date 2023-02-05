@@ -1,7 +1,8 @@
 import { IImage } from './interfaces'
 
-export function renderTemplate<T = string | DocumentFragment>(root: ShadowRoot, template: T, data: IImage[]): void {
-    ;(<DocumentFragment>template) = getTemplate(<string>template)
+export function renderTemplate(root: ShadowRoot, template: string, data: IImage[]): void {
+    const fragment: DocumentFragment = getTemplate(template)
+    console.log(fragment)
 
     for (const entry of data) {
         const render = generateTemplate(entry)
