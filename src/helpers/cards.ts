@@ -49,7 +49,7 @@ export default {
         }, [])
     },
 
-    objectFactory: function (images: Object[]): Object[] {
+    objectFactory: function (images: IImage[]): IImage[] {
         const data = []
         for (const image of images) {
             data.push({
