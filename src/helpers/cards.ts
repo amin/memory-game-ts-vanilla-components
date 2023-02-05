@@ -1,19 +1,4 @@
-interface IImage {
-    element: {
-        type: string
-        attributes: {
-            src: Object
-        }
-    }
-}
-
-interface IOptions {
-    api: {
-        url: string
-    }
-    size: number
-    pairs: number
-}
+import { IOptions, IImage } from './interfaces'
 
 export default {
     options: {

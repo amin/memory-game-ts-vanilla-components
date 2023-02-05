@@ -1,4 +1,6 @@
-export function renderTemplate<T = string | DocumentFragment>(root: ShadowRoot, template: T, data: Object[]): void {
+import { IImage } from './interfaces'
+
+export function renderTemplate<T = string | DocumentFragment>(root: ShadowRoot, template: T, data: IImage[]): void {
     ;(<DocumentFragment>template) = getTemplate(<string>template)
 
     for (const entry of data) {
@@ -11,7 +13,7 @@ function getTemplate(id: string): DocumentFragment {
     return (document.getElementById(id) as HTMLTemplateElement).content
 }
 
-function generateTemplate(data: Object): DocumentFragment {
+function generateTemplate(data: IImage): DocumentFragment {
     if (!Object.keys(data).length) throw new Error('Cannot parse data.')
     if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
 
