@@ -20,7 +20,7 @@ const utils = {
     },
 
     grabUrl: function (size: number): string {
-        return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, 'https://picsum.photos/').href
+        return new URL(size.toString() + `?hash=${Date.now() + Math.floor(Math.random() * 1000)}`, 'https://picsum.photos/').href
     },
 
     grabImages: async function (url: string): Promise<Object> {
@@ -33,12 +33,12 @@ const utils = {
         }
     },
 
-    shuffle: function (array: Object[]) {
-        return array.reduce((_accumulator, _element, index, array) => {
-            let r = Math.floor((array.length - index) * Math.random() + 1)
-            ;[array[index], array[r]] = [array[r], array[index]]
-            return array
-        }, [])
+    shuffle: function (array: Object[]): Object[] {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            ;[array[i], array[j]] = [array[j], array[i]]
+        }
+        return array
     },
 
     objectFactory: function (images: string[]): IImage[] {
