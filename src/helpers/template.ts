@@ -13,19 +13,19 @@ function getTemplate(id: string): DocumentFragment {
 
 function generateTemplate(data: Object): DocumentFragment {
     const fragment = new DocumentFragment()
-    if (Object.keys(data).length) {
-        if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
-        return Object.values(data).reduce((_accumulator, entry): DocumentFragment => {
-            const element = document.createElement(entry.type)
-            if (entry.attributes) {
-                Object.entries(entry.attributes).map(([key, attribute]) => {
-                    element.setAttribute(key, attribute)
-                })
-            }
-            fragment.append(element)
 
-            return fragment
-        }, [] as DocumentFragment[])
-    }
-    throw new Error('Something went very wrong.')
+    if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
+    if (!Object.keys(data).length) throw new Error('Cannot parse data.')
+
+    return Object.values(data).reduce((_accumulator, entry) => {
+        const element = document.createElement(entry.type)
+        if (entry.attributes) {
+            Object.entries(entry.attributes).map(([key, attribute]) => {
+                element.setAttribute(key, attribute)
+            })
+        }
+
+        fragment.append(element)
+        return fragment
+    }, [] as DocumentFragment[])
 }
