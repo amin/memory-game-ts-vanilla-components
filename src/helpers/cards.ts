@@ -1,13 +1,30 @@
+interface IImage {
+    element: {
+        type: string
+        attributes: {
+            src: Object
+        }
+    }
+}
+
+interface IOptions {
+    api: {
+        url: string
+    }
+    size: number
+    pairs: number
+}
+
 export default {
     options: {
         api: {
             url: 'https://picsum.photos/',
         },
-        pairs: 6,
         size: 250,
-    },
+        pairs: 6,
+    } satisfies IOptions,
 
-    get: async function (this: any, { size = this.options.size as number, pairs = this.options.pairs as number } = {}): Promise<Object> {
+    get: async function (this, { size = this.options.size as number, pairs = this.options.pairs as number } = {}): Promise<Object> {
         const array = []
 
         for (let i = pairs; i > 0; i--) {
@@ -25,11 +42,11 @@ export default {
         return this.shuffle(this.objectFactory(array))
     },
 
-    grabUrl: function (size: number) {
+    grabUrl: function (size: number): string {
         return new URL(size.toString() + `?${Date.now() + Math.floor(Math.random() * 1000)}`, this.options.api.url).href
     },
 
-    grabImages: async function (url: string) {
+    grabImages: async function (url: string): Promise<Object> {
         try {
             return await fetch(url)
         } catch (e) {
@@ -39,7 +56,7 @@ export default {
         }
     },
 
-    shuffle: function (array: Array<Object>) {
+    shuffle: function (array: Object[]) {
         return array.reduce((_accumulator, _element, index, array) => {
             let r = Math.floor((array.length - index) * Math.random() + 1)
             ;[array[index], array[r]] = [array[r], array[index]]
@@ -47,7 +64,7 @@ export default {
         }, [])
     },
 
-    objectFactory: function (images: Array<Object>) {
+    objectFactory: function (images: Object[]): Object[] {
         const data = []
         for (const image of images) {
             data.push({
@@ -57,7 +74,7 @@ export default {
                         src: image,
                     },
                 },
-            })
+            } satisfies IImage)
         }
         return [...data, ...data]
     },

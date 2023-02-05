@@ -1,5 +1,5 @@
-export function renderTemplate(root: ShadowRoot, template: DocumentFragment | string, data: Array<Object>): void {
-    template = getTemplate(template as string)
+export function renderTemplate<T = string | DocumentFragment>(root: ShadowRoot, template: T, data: Object[]): void {
+    ;(<DocumentFragment>template) = getTemplate(<string>template)
 
     for (const entry of data) {
         const render = generateTemplate(entry)
