@@ -19,11 +19,11 @@ function generateTemplate(data: Object): DocumentFragment {
 
     return Object.values(data).reduce((_accumulator, entry) => {
         const element = document.createElement(entry.type)
-        if (entry.attributes) {
+
+        if (entry.attributes)
             Object.entries(entry.attributes).map(([key, attribute]) => {
                 element.setAttribute(key, attribute)
             })
-        }
 
         fragment.append(element)
         return fragment
