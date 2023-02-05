@@ -6,11 +6,3 @@ export interface IImage {
         }
     }
 }
-
-export interface IOptions {
-    api: {
-        url: string
-    }
-    size: number
-    pairs: number
-}
