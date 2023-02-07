@@ -4,5 +4,4 @@
  */
 
 import { Memory } from './memory/script'
-
 customElements.define('memory-module', Memory)
