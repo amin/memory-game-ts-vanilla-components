@@ -1,7 +1,7 @@
 import { IImage } from './interfaces'
 
 const utils = {
-    getCards: async ({ size = 250 as number, pairs = 6 as number } = {}): Promise<Object> => {
+    getCards: async ({ size = 250 as number, pairs = 1 as number } = {}): Promise<Object> => {
         const array: string[] = []
 
         for (let i = pairs; i > 0; i--) {
@@ -20,7 +20,10 @@ const utils = {
     },
 
     grabUrl: function (size: number): string {
-        return new URL(size.toString() + `?hash=${Date.now() + Math.floor(Math.random() * 1000)}`, 'https://picsum.photos/').href
+        return new URL(
+            size.toString() + `?hash=${Date.now() + Math.floor(Math.random() * 1000)}`,
+            'https://picsum.photos/'
+        ).href
     },
 
     grabImages: async function (url: string): Promise<Object> {
@@ -49,6 +52,7 @@ const utils = {
                     type: 'img',
                     attributes: {
                         src: image,
+                        target: 'alt=""',
                     },
                 },
             } satisfies IImage)

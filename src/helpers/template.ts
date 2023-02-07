@@ -14,21 +14,21 @@ function getTemplate(id: string): DocumentFragment {
     return (document.getElementById(id) as HTMLTemplateElement).content
 }
 
-function generateTemplate(data: IImage): DocumentFragment {
-    if (!Object.keys(data).length) throw new Error('Cannot parse data.')
-    if (Object.keys(data).indexOf('element')) throw new Error('Invalid paramaters. No element<Object> found.')
+function generateTemplate(data: IImage, currentObj: Object): DocumentFragment {
+    const objects = Object.getOwnPropertyNames(data).filter((e) => typeof data[e] === 'object')
+    const attributes = Object.getOwnPropertyNames(data).filter((e) => typeof data[e] !== 'object')
+    for (const object of objects) {
+        generateTemplate(data[object], data)
+    }
+    if (!currentObj) return
 
-    const fragment = new DocumentFragment()
-
-    return Object.values(data).reduce((_accumulator, entry) => {
-        const element = document.createElement(entry.type)
-
-        if (entry.attributes)
-            Object.entries(entry.attributes).map(([key, attribute]) => {
-                element.setAttribute(key, attribute)
-            })
-
-        fragment.append(element)
-        return fragment
-    }, [] as DocumentFragment[])
+    const keys = Object.keys(currentObj)
+    const element = keys.reduce((accumulator, key, index) => {
+        if (key === 'type') accumulator = document.createElement(currentObj[key])
+        if (key === 'attributes')
+            Object.entries(currentObj[key]).map(([key, attr]) =>
+                accumulator.setAttribute(key, attr)
+            )
+        return accumulator
+    }, Element)
 }

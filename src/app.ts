@@ -1,7 +1,9 @@
 /*
-    Memory game build using ESNext features.
+    A simple memory game build utilizing ESNext features.
     By: Amin El-Rifai
- */
+    Github: @amin
+    https://amin.sh
+*/
 
-import { Memory } from './memory/script'
-customElements.define('memory-module', Memory)
+// This is a list of imported modules.
+import './memory/script'
