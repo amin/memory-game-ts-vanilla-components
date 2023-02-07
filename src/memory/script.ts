@@ -4,6 +4,7 @@ import getCards from '../helpers/cards'
 
 export class Memory extends HTMLElement {
   root: ShadowRoot
+
   constructor() {
     super()
     this.root = this.attachShadow({ mode: 'open' })
