@@ -10,13 +10,11 @@ export class Memory extends HTMLElement {
     this.root.innerHTML = '<style>@import url("./src/memory/style.css")</style>'
   }
 
-  #generateBoard(template: string, data: IImage[]) {
-    renderTemplate(this.root, template, data)
-  }
-
   connectedCallback() {
     getCards().then((data) => {
-      this.#generateBoard('card', data as IImage[])
+      renderTemplate(this.root, 'card', data as IImage[])
     })
   }
 }
+
+customElements.define('memory-module', Memory)

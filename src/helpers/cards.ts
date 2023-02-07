@@ -1,7 +1,7 @@
 import { IImage } from './interfaces'
 
 const utils = {
-    getCards: async ({ size = 250 as number, pairs = 1 as number } = {}): Promise<Object> => {
+    getCards: async ({ size = 250 as number, pairs = 6 as number } = {}): Promise<Object> => {
         const array: string[] = []
 
         for (let i = pairs; i > 0; i--) {
