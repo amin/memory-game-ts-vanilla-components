@@ -10,8 +10,8 @@ const cardUtils = {
                 const blob = await response.blob()
                 const base64 = URL.createObjectURL(blob)
                 array.push(base64)
-            } catch (e) {
-                console.error(e)
+            } catch (error) {
+                console.error(error)
                 throw new Error('Error parsing blobs.')
             }
         }
