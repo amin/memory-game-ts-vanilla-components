@@ -1,12 +1,12 @@
 import { IImage } from './interfaces'
 
-const utils = {
+const cardUtils = {
     getCards: async ({ size = 250 as number, pairs = 6 as number } = {}): Promise<Object> => {
         const array: string[] = []
 
         for (let i = pairs; i > 0; i--) {
             try {
-                const response = (await utils.getImages(utils.getUrl(size))) as Response
+                const response = (await cardUtils.getImages(cardUtils.getUrl(size))) as Response
                 const blob = await response.blob()
                 const base64 = URL.createObjectURL(blob)
                 array.push(base64)
@@ -15,7 +15,7 @@ const utils = {
                 throw new Error('Error parsing blobs.')
             }
         }
-        return utils.shuffle(utils.objectFactory(array))
+        return cardUtils.shuffle(cardUtils.objectFactory(array))
     },
 
     getUrl: function (size: number): string {
@@ -60,4 +60,4 @@ const utils = {
     },
 }
 
-export default utils.getCards
+export default cardUtils.getCards
