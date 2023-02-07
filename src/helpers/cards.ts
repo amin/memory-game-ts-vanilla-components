@@ -6,7 +6,7 @@ const utils = {
 
         for (let i = pairs; i > 0; i--) {
             try {
-                const response = (await utils.grabImages(utils.grabUrl(size))) as Response
+                const response = (await utils.getImages(utils.getUrl(size))) as Response
                 const blob = await response.blob()
                 const base64 = URL.createObjectURL(blob)
                 array.push(base64)
@@ -18,14 +18,14 @@ const utils = {
         return utils.shuffle(utils.objectFactory(array))
     },
 
-    grabUrl: function (size: number): string {
+    getUrl: function (size: number): string {
         return new URL(
             size.toString() + `?hash=${Date.now() + Math.floor(Math.random() * 1000)}`,
             'https://picsum.photos/'
         ).href
     },
 
-    grabImages: async function (url: string): Promise<Object> {
+    getImages: async function (url: string): Promise<Object> {
         try {
             return await fetch(url)
         } catch (e) {
