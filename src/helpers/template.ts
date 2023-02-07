@@ -21,9 +21,10 @@ function generateTemplate(data: IImage, currentObj: Object): DocumentFragment {
     return Object.keys(currentObj).reduce((accumulator, key, index) => {
         if (key === 'type') accumulator = document.createElement(currentObj[key])
         if (key === 'attributes')
-            Object.entries(currentObj[key]).map(([key, attr]) =>
+            Object.entries(currentObj[key]).map(([key, attr]) => {
+                data = { key, attr }
                 accumulator.setAttribute(key, attr)
-            )
+            })
         return accumulator
     }, Element)
 }
