@@ -15,8 +15,6 @@ const utils = {
                 throw new Error('Error parsing blobs.')
             }
         }
-        ß
-
         return utils.shuffle(utils.objectFactory(array))
     },
 
