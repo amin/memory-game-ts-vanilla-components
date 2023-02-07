@@ -15,7 +15,6 @@ function getTemplate(id: string): DocumentFragment {
 function generateTemplate(data: IImage, currentObj: Object): DocumentFragment {
     if (!Object.keys(data).length) throw new Error('Cannot parse data.')
     const objects = Object.getOwnPropertyNames(data).filter((e) => typeof data[e] === 'object')
-    const attributes = Object.getOwnPropertyNames(data).filter((e) => typeof data[e] !== 'object')
     for (const object of objects) {
         return generateTemplate(data[object], data)
     }
