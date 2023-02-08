@@ -6,3 +6,8 @@
  */
 
 import './src/memory/script'
+
+const App = document.getElementById('app')
+const memory = document.createElement('memory-module')
+
+App ? App.append(memory) : null
