@@ -27,8 +27,8 @@ const cardUtils = {
     getImages: async function (url: string): Promise<Object> {
         try {
             return await fetch(url)
-        } catch (e) {
-            console.error(e)
+        } catch (error) {
+            console.error(error)
             console.warn('Attempting to fetch content...')
             return new Promise((resolve) => setTimeout(async () => resolve(await fetch(url)), 3000))
         }
@@ -50,7 +50,6 @@ const cardUtils = {
                     type: 'img',
                     attributes: {
                         src: image,
-                        slot: 'back',
                     },
                 },
             } satisfies IImage)
