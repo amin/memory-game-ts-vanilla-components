@@ -6,7 +6,7 @@ const cardUtils = {
 
         for (let i = pairs; i > 0; i--) {
             try {
-                const blob = (await (await cardUtils.getImages(cardUtils.getUrl(size))).blob()) as Response
+                const blob = (await ((await cardUtils.getImages(cardUtils.getUrl(size))) as Response).blob()) as Blob
                 const base64 = URL.createObjectURL(blob)
                 array.push(base64)
             } catch (error) {
