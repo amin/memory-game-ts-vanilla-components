@@ -51,7 +51,7 @@ const cardUtils = {
                     type: 'img',
                     attributes: {
                         src: image,
-                        target: 'alt=""',
+                        slot: 'back',
                     },
                 },
             } satisfies IImage)

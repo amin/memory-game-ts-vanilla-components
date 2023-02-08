@@ -13,7 +13,7 @@ export class Memory extends HTMLElement {
 
   connectedCallback() {
     getCards().then((data) => {
-      renderTemplate(this.root, 'card', data as IImage[])
+      renderTemplate(this.root, 'card', data as Object[], 'card-back')
     })
   }
 }
