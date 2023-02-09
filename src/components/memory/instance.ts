@@ -1,4 +1,4 @@
-import { renderTemplate } from '../helpers/template'
+import { renderTemplate } from '../../helpers/template'
 import { IImage } from './interfaces'
 import getCards from './cardUtils'
 

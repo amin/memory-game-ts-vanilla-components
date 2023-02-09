@@ -5,8 +5,8 @@
     Blog: https://amin.sh
  */
 
-import './src/menu/instance'
-import './src/memory/instance'
+import './src/components/menu/instance'
+import './src/components/memory/instance'
 
 const App = document.getElementById('app')
 const menu = document.createElement('game-menu')
