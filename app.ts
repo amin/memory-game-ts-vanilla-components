@@ -5,9 +5,10 @@
     Blog: https://amin.sh
  */
 
-import './src/memory/script'
+import './src/menu/instance'
+import './src/memory/instance'
 
 const App = document.getElementById('app')
-const memory = document.createElement('memory-module')
+const menu = document.createElement('game-menu')
 
-App ? App.append(memory) : console.error('Something went wrong.')
+App ? App.append(menu) : console.error('Something went wrong.')

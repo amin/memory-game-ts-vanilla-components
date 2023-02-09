@@ -1,6 +1,6 @@
 import { renderTemplate } from '../helpers/template'
-import { IImage } from '../helpers/interfaces'
-import getCards from '../helpers/cards'
+import { IImage } from './interfaces'
+import getCards from './cardUtils'
 
 export class Memory extends HTMLElement {
   root: ShadowRoot
@@ -8,7 +8,6 @@ export class Memory extends HTMLElement {
   constructor() {
     super()
     this.root = this.attachShadow({ mode: 'open' })
-    this.root.innerHTML = '<style>@import url("./src/memory/style.css")</style>'
   }
 
   connectedCallback() {
@@ -18,4 +17,4 @@ export class Memory extends HTMLElement {
   }
 }
 
-customElements.define('memory-module', Memory)
+customElements.define('game-instance', Memory)
