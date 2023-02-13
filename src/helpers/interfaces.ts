@@ -1,8 +1,6 @@
 export interface IImage {
-    element: {
-        type?: string
-        attributes?: {
-            src: Object
-        }
+    type: string
+    attributes: {
+        src: Blob
     }
 }

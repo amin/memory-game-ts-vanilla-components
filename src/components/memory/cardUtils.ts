@@ -42,7 +42,7 @@ const cardUtils = {
         return array
     },
 
-    objectFactory: function (images: string[]): IImage[] {
+    objectFactory: function (images: string[]) {
         const data = []
         for (const image of images) {
             data.push({
@@ -52,7 +52,7 @@ const cardUtils = {
                         src: image,
                     },
                 },
-            } satisfies IImage)
+            })
         }
         return [...data, ...data]
     },
